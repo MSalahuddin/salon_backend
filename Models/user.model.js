@@ -38,6 +38,18 @@ const userSchema = new mongoose.Schema({
         type:Date,
         default:null
     },
+    address:{
+        type:String,
+        default:null
+    },
+    postalCode:{
+        type:String,
+        default:null,
+    },
+    city:{
+        type:String,
+        default:null
+    },
     profile_img: { type:String},
     gcm_id: String,
     platform: String,
