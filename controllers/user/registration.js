@@ -49,7 +49,7 @@ console.log(role._id)
         res.send(errors);
         return;
     }
-    data.role=req.body.role
+    data = {...data,...{role:role.type}}
     const requestData = {
         success: true,
         msg: 'User created successfully.',
@@ -83,7 +83,7 @@ async function getRole(data) {
     return role;
 }
 async function createRole(data) {
-    console.log(data,"dddddddddddddddddddddd")
+
     const role = new userroleData(data);
     try {
         const result = await role.save();
@@ -97,10 +97,7 @@ async function createRole(data) {
 
 //***** Initialing and saving data *****//
 async function createUser(userData) {
-    console.log(userData, "uper")
     delete userData.role;
-    console.log(userData, "nechay")
-    // return new Promise((res)=> {
     userData.profile_img = 'host/public/images/user.png';
     userData.login_type = 0;
     const user = new UserData(userData);
