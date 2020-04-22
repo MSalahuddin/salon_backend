@@ -76,7 +76,12 @@ function validateUserData(userData) {
     phoneNo: Joi.number().required(),
     password: Joi.string().min(5),
     gcm_id: Joi.string(),
+    address: Joi,
+    postalCode: Joi,
+    dob: Joi,
+    city: Joi,
     platform: Joi.string(),
+
     role: Joi.number().valid([1, 2, 3, 4, 5]).required(),
   });
   return Joi.validate(userData, schema);
