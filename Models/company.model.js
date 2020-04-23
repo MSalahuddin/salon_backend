@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 
-const userSchema = new mongoose.Schema({
+const companySchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true, ref: 'User'
@@ -53,12 +53,7 @@ const userSchema = new mongoose.Schema({
     },
     createdDate: { type: Date, default: Date.now },
 });
-function generateAuthToken(_id) {
-    const token = jwt.sign({ _id: _id }, config.get('jwtPrivateKey'));
-    return token;
-}
-const UserData = mongoose.model('users', userSchema);
+const companyData = mongoose.model('companies', companySchema);
 
 
-exports.UserData = UserData;
-exports.generateAuthToken = generateAuthToken;
+exports.companyData = companyData;
