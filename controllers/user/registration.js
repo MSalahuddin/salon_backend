@@ -26,7 +26,7 @@ app.post("/", async (req, res) => {
     return;
   }
   const role = await getRole(req.body);
-  console.log(role._id);
+  console.log(role)
   const user = await createUser(req.body);
   if (user == 500) {
     var errors = {
@@ -89,7 +89,6 @@ function validateUserData(userData) {
 //***** ///// *****//
 
 async function getRole(data) {
-  // console.log(data)
   const role = await RoleData.findOne({ type: data.role });
   return role;
 }
