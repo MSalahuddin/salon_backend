@@ -2,9 +2,12 @@ const mongoose = require('mongoose');
 
 
 const paymentSchema = new mongoose.Schema({
-    Name: {
+    name: {
         type: String,
         required: true
+    },
+    imageUrl: {
+        type: String
     }
 });
 

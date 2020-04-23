@@ -7,7 +7,7 @@ const CompanyPlanSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         required: true, ref: 'companies'
     },
-    planId:{
+    itemId:{
         type: mongoose.Schema.Types.ObjectId, 
         required: true, ref: 'planItems'
     },

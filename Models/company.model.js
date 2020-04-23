@@ -43,7 +43,7 @@ const companySchema = new mongoose.Schema({
         default: null
     },
 
-    Business_id: {
+    BusinessTax_id: {
         type: String,
         default: null
     },
