@@ -15,6 +15,7 @@ mongoose
   .connect(
     "mongodb+srv://sud:12345sud@cluster0-dhwk1.gcp.mongodb.net/test?retryWrites=true&w=majority"
   )
+// mongoose.connect('mongodb://localhost/SaloonApp')
   .then(() => console.log("connected to Saloon APP..."))
   .catch((err) => console.errr("Could not connect to database...", err));
 //***** ///// *****//
