@@ -105,7 +105,7 @@ async function createRole(data) {
 //***** Initialing and saving data *****//
 async function createUser(userData) {
   delete userData.role;
-  userData.profile_img = "host/public/images/user.png";
+  userData.profile_img = "https://easy-1-jq7udywfca-uc.a.run.app/public/images/user.png";
   userData.login_type = 0;
   const user = new UserData(userData);
   const salt = await bcrypt.genSalt(10);
