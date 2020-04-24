@@ -9,10 +9,10 @@ const app = express.Router();
 //***** Distributing requests *****//
 
 //~~ get plans ~~//
-const getPlan = require('../controllers/plan/getPlan');
-app.use('/getplan', getPlan);
+const getMethod = require('../controllers/payments/getpayment');
+app.use('/getMethod', getMethod);
 
-// const setPlan = require('../controllers/plan/setplan');
-// app.use('/setplan', setPlan);
+// const setMethod = require('../controllers/payments/setpayment');
+// app.use('/setMethod', setMethod);
 //***** ///// *****//
 module.exports = app;

@@ -34,7 +34,7 @@ if(validPayment.success == false){
 }
   const role = await getRole(req.body.user);
 
-//   console.log(role)
+  console.log(role)
 //   const user = await createUser(req.body);
 //   if (user == 500) {
 //     var errors = {

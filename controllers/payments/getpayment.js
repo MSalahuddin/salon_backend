@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const express = require('express');
 const Joi = require('joi');
-const { planItemData } = require('../../Models/plansItem.model');
+const { paymentMethods } = require('../../Models/payments.model');
 const auth = require('../../middleware/auth');
 //***** ///// *****//
 
@@ -14,15 +14,14 @@ const app = express();
 
 //***** Post Request for Login *****//
 app.get('/', async(req, res)=> {
+    try{
+  const plans = await paymentMethods.find();
+  res.send({success:true,msg:"plans Found",data:plans})
+}
+catch(err){
+    res.send({success:false,msg:"Error",data:''})
+}
 
-  try{
-    const plans = await planItemData.find();
-    res.send({success:true,msg:"plans Found",data:plans})
-  }
-  catch(err){
-      res.send({success:false,msg:"Error",data:''})
-  }
-  
 });
 //***** ///// *****//
 
