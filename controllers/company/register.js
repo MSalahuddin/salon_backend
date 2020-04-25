@@ -22,16 +22,20 @@ app.post("/", async (req, res) => {
   // validation error response send
   if (validUser.success == false) {
     res.send(validUser);
+    return;
   }
   if (validCompany.success == false) {
     res.send(validCompany);
+    return;
   }
   if (validPlan.success == false) {
     res.send(validPlan);
+    return;
   }
 
   if (validPayment.success == false) {
     res.send(validPayment);
+    return;
   }
   /////////////////////////////////////
 
@@ -44,6 +48,7 @@ app.post("/", async (req, res) => {
       success: false,
       msg: "You don't have enough rights to access this service",
     });
+    return;
   }
 
   ////////////// create user ///////////////////////
@@ -52,6 +57,7 @@ app.post("/", async (req, res) => {
 
   if (!user.success) {
     res.send(user);
+    return;
   }
 
   //////////// create user role /////////////////
@@ -59,6 +65,7 @@ app.post("/", async (req, res) => {
     role: [roleResponse.type],
     userId: user.data._id,
   });
+
   if (userRole == 500) {
     var errors = {
       success: false,
@@ -68,6 +75,7 @@ app.post("/", async (req, res) => {
     res.send(errors);
     return;
   }
+
   console.log(userRole, "rolllllllllllllllll");
 
   //   let data = _.pick(user, [
