@@ -6,6 +6,9 @@ const Joi = require("joi");
 const { UserData, generateAuthToken } = require("../../Models/user.model");
 const { RoleData } = require("../../Models/role.model");
 const { userroleData } = require("../../Models/userRole.model");
+const { companyData } = require('../../Models/company.model')
+const { userPayment } = require('../../Models/userPayment.model');
+const { companyPlanData } = require('../../Models/companyPlane.model');
 //***** ///// *****//
 
 //***** Express Router to export in module *****//
@@ -59,7 +62,7 @@ app.post("/", async (req, res) => {
     res.send(user);
     return;
   }
-
+console.log(user)
   //////////// create user role /////////////////
   const userRole = await createRole({
     role: [roleResponse.type],
@@ -75,26 +78,51 @@ app.post("/", async (req, res) => {
     res.send(errors);
     return;
   }
-
-  console.log(userRole, "rolllllllllllllllll");
-
-  //   let data = _.pick(user, [
-  //     "_id",
-  //     "firstName",
-  //     "lastName",
-  //     "phoneNo",
-  //     "dob",
-  //     "email",
-  //     "createdDate",
-  //   ]);
-  //
-  //   data = { ...data, ...{ role: role.type } };
-  //   const requestData = {
-  //     success: true,
-  //     msg: "User created successfully.",
-  //     data: data,
-  //   };
-  //   res.send(requestData);
+  console.log(user)
+  var companyData = { ...req.body.company, ...{ userId: user.data._id } }
+  const company = await createCompany(companyData);
+  if (company.success == false) {
+    res.send(company);
+    return;
+  }
+  var paymentData = { ...req.body.payment, ...{ userId: user.data._id } }
+  const paymentMethod = await createCompanyPayment(paymentData)
+  if (paymentMethod.success == false) {
+    res.send(paymentMethod)
+    return
+  }
+  // var planData = {...req.body.plan.planItems}
+  console.log(company)
+  const plan = await arrayOfPlan(req.body.plan.planItems, company)
+  if (plan.success === false) {
+    res.send(plan)
+    return
+  }
+let savedUser = _.pick(user, [
+      "_id",
+      "firstName",
+      "lastName",
+      "phoneNo",
+      "dob",
+      "email",
+      "createdDate",
+    ]);
+        savedUser = { ...savedUser, ...{ role: role.type } };
+    let savedCompany = _.pick(company, [
+          "_id",
+          "name",
+          "businessEmail",
+          "createdDate",
+        ]);
+        
+  let data = {user:savedUser,company:savedCompany,access_token:user.access_token}
+  
+    const requestData = {
+      success: true,
+      msg: "User created successfully.",
+      data: data,
+    };
+    res.send(requestData);
 });
 //***** ///// *****//
 
@@ -139,7 +167,7 @@ function validateCompanyData(companyData) {
 
 function validatePaymentData(paymentData) {
   const schema = Joi.object().keys({
-    paymentMethodId: Joi.string().required(),
+    PaymentId: Joi.string().required(),
     cardNo: Joi.string().required(),
     cardOwnerName: Joi.string().required(),
   });
@@ -164,15 +192,6 @@ function validatePlanData(plandata) {
 }
 //**///////// */
 
-//**validate planItems */
-function validatePlanItemData(plandata) {
-  const schema = Joi.object().keys({
-    id: Joi.string().required(),
-    qty: Joi.number().required(),
-  });
-  return Joi.validate(plandata, schema);
-}
-//**///////// */
 
 //****get Role from Database */
 async function getRole(data) {
@@ -203,7 +222,10 @@ async function createRole(data) {
 //***///// *//
 
 //***** Initialing and saving data *****//
-async function createUser(userData) {
+
+
+
+async function createUser(userData) {    ///Creating User///////////////////////////////////////////////////
   delete userData.role;
   userData.profile_img =
     "https://easy-1-jq7udywfca-uc.a.run.app/public/images/user.png";
@@ -219,6 +241,56 @@ async function createUser(userData) {
     return { success: false, error: err, data: null };
   }
   return { success: true, data: resResult };
+}
+
+
+async function createCompany(data) {
+  const company = new companyData(data)
+  var result;
+  try {
+    result = await company.save();
+  } catch (err) {
+    return { success: false, error: err, data: null };
+  }
+  return { success: true, data: result };
+
+}
+async function createCompanyPayment(data) {
+  const CompanyPayment = new userPayment(data);
+  var result;
+  try {
+    result = await CompanyPayment.save();
+  } catch (err) {
+    return { success: false, error: err, data: null };
+  }
+  return { success: true, data: result };
+
+}
+
+async function createCompanyPlan(data) {
+  console.log(data)
+  const companyPlan = new companyPlanData(data);
+  var result;
+  try {
+    result = await companyPlan.save();
+  } catch (err) {
+    console.log(err)
+    return { success: false, error: err, data: null };
+  }
+  return { success: true, data: result };
+
+}
+
+
+async function arrayOfPlan(data, company) {
+  for (var i = 0; i < data.length; i++) {
+    var planData = { ...data[i], ...{ companyId: company.data._id } }
+    const plan = await createCompanyPlan(planData);
+    if (plan.success == false) {
+      return plan;
+    }
+  }
+  return { success: true, msg: "Plan Created" }
 }
 
 //****validation Functions */
@@ -275,41 +347,11 @@ async function planValidation(data) {
     };
     return errors;
   }
-  // if(data.plan && data.plan.planItems){
-  //     for (var i = 0 ;i < data.plan.planItems.length; i++){
-  //         let validItems = await planItemValidation(data.plan.planItems[i])
-  //         if(validItems.success ===false){
-  //             return validItems
-  //         }
-  //     }
-  //     return {success:true}
-  // }
-  // else{
-  //     var err = {
-  //         success: false,
-  //         msg: `Plans planValidation Error`,
-  //         data: 'provide a Valid Plan',
-  //     }
-  //     return err
-  // }
+
 
   return { success: true };
 }
 
-async function planItemValidation(Data) {
-  //plan validation
-
-  const { error } = validatePlanItemData(Data);
-  if (error) {
-    var errors = {
-      success: false,
-      msg: `Plans ${error.name}`,
-      data: error.details[0].message,
-    };
-    return errors;
-  }
-  return { success: true };
-}
 
 //***** ///// *****//
 
