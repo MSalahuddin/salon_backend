@@ -98,7 +98,7 @@ console.log(user)
     res.send(plan)
     return
   }
-let savedUser = _.pick(user, [
+let savedUser = _.pick(user.data, [
       "_id",
       "firstName",
       "lastName",
@@ -107,8 +107,8 @@ let savedUser = _.pick(user, [
       "email",
       "createdDate",
     ]);
-        savedUser = { ...savedUser, ...{ role: role.type } };
-    let savedCompany = _.pick(company, [
+        savedUser = { ...savedUser, ...{ role: roleResponse.type } };
+    let savedCompany = _.pick(company.data, [
           "_id",
           "name",
           "businessEmail",

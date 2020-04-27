@@ -6,7 +6,7 @@ const userPaymentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         required: true, ref: 'paymentMethods'
     },
-    UserId:{
+    userId:{
         type: mongoose.Schema.Types.ObjectId, 
         required: true, ref: 'User'
     },
