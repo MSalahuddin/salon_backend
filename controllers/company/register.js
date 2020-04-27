@@ -115,7 +115,7 @@ let savedUser = _.pick(user.data, [
           "createdDate",
         ]);
         
-  let data = {user:savedUser,company:savedCompany,access_token:user.access_token}
+  let data = {user:savedUser,company:savedCompany,access_token:user.data.access_token}
   
     const requestData = {
       success: true,
