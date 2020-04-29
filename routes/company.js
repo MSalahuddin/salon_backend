@@ -17,14 +17,14 @@ const loginModule = require('../controllers/company/login');
 app.use('/login', loginModule);
 //***** ///// *****//
 
-//~~ Social Login ~~//
-// const  SocialloginModule = require('../controllers/company/socialLogin');
-// app.use('/social-login', SocialloginModule);
+//~~ create company ~~//
+const  createCompany= require('../controllers/company/createCompany');
+app.use('/createCompany', createCompany);
 //***** ///// *****//
 
-//~~ Edit Profile ~~//
-// const editModule = require('../controllers/company/editProfile');
-// app.use('/edit', editModule);
+//~~ create plans ~~//
+const createPlans = require('../controllers/company/createPlan');
+app.use('/plan', createPlans);
 //***** ///// *****//
 
 //***** ///// *****//
