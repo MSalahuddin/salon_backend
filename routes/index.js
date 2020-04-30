@@ -5,7 +5,8 @@ const CompanyRouter = require('./company');
 const planRouter = require('./plan');
 const paymentRouter = require('./payment');
 const employeeRouter = require('./employee');
-const serviceRouter = require('./service')
+const serviceRouter = require('./service');
+const saloonRouter = require('./saloon');
 var app = express();
 /* GET home page. */
 
@@ -14,6 +15,7 @@ app.use('/password', passwordRouter);
 app.use('/company',CompanyRouter);
 app.use('/plan',planRouter);
 app.use('/payment',paymentRouter);
-app.use('/employee', employeeRouter )
-app.use('/service', serviceRouter )
+app.use('/employee', employeeRouter );
+app.use('/service', serviceRouter );
+app.use('/saloon',saloonRouter);
 module.exports = app;

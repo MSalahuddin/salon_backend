@@ -51,6 +51,12 @@ const companySchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  latitude:{
+    type:String,
+  },
+  longitude:{
+    type:String
+  },
   isActive: {
     type: Number,
     default: 0,

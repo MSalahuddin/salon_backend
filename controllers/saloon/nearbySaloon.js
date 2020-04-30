@@ -11,7 +11,21 @@ const auth = require('../../middleware/auth');
 //***** Express Router to export in module *****//
 const app = express();
 //***** ///// *****//
-
+const distance = (lat1, lon1, lat2, lon2) => {
+    console.log(lat1,lon1)
+    var R = 6371; // km (change this constant to get miles)
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    // if (d>1) 
+    return Math.round(d);
+    // else if (d<=1) return Math.round(d*1000)+"m";
+    // return d;
+  }
 //***** Post Request for Signup *****//
 app.post("/", auth, async (req, res) => {
     const { error } = validateCompanyData(req.body);
@@ -27,35 +41,25 @@ app.post("/", auth, async (req, res) => {
     }
     req.body.userId = req.user._id;
     const role = await getRole(req.user._id);
-    if (role.role[0] !== '3') {
-        var err = {
-            success: false,
-            msg: "access denied"
-        }
-        res.status(403).send(err)
-    }
-    const company = await createCompany(req.body)
-    if (company.success === false) {
-        res.status(400).send(company)
-        return
-    }
-    res.send(company);
+    // if (role.role[0] !== '3') {
+    //     var err = {
+    //         success: false,
+    //         msg: "access denied"
+    //     }
+    //     res.status(403).send(err)
+    // }
+    // const company = await createCompany(req.body)
+    // if (company.success === false) {
+    //     res.status(400).send(company)
+    //     return
+    // }
+    // res.send(company);
 });
 //***** ///// *****//
 
 //***** User signup data validation function *****//
 function validateCompanyData(companyData) {
     const schema = Joi.object().keys({
-        name: Joi.string().required(),
-        numberOfEmployer: Joi.number().required(),
-        address: Joi.string().required(),
-        city: Joi.string().required(),
-        province: Joi.string().required(),
-        postalCode: Joi.number().required(),
-        businessTaxId: Joi.string().required(),
-        businessEmail: Joi.string().email({ minDomainAtoms: 2 }).required(),
-        businessTelephone: Joi.number().required(),
-        businessCertificate: Joi.string().required(),
         latitude:Joi.number().required(),
         longitude:Joi.number().required(),
     });
