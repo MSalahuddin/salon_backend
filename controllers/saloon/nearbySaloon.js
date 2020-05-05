@@ -41,19 +41,15 @@ app.post("/", auth, async (req, res) => {
     }
     req.body.userId = req.user._id;
     const role = await getRole(req.user._id);
-    // if (role.role[0] !== '3') {
-    //     var err = {
-    //         success: false,
-    //         msg: "access denied"
-    //     }
-    //     res.status(403).send(err)
-    // }
-    // const company = await createCompany(req.body)
-    // if (company.success === false) {
-    //     res.status(400).send(company)
-    //     return
-    // }
-    // res.send(company);
+    if (role.role[0] === '3' ) {
+        var err = {
+            success: false,
+            msg: "access denied"
+        }
+        res.status(403).send(err)
+    }
+    const saloon = await getSaloon(req.body)
+   res.send(saloon)
 });
 //***** ///// *****//
 
@@ -62,6 +58,7 @@ function validateCompanyData(companyData) {
     const schema = Joi.object().keys({
         latitude:Joi.number().required(),
         longitude:Joi.number().required(),
+        radius:Joi.number().required()
     });
     return Joi.validate(companyData, schema);
 }
@@ -74,16 +71,18 @@ async function getRole(data) {
 
 
 //***** Initialing and saving data *****//
-async function createCompany(data) {
-    const company = new companyData(data)
-    var result;
-    try {
-        result = await company.save();
-    } catch (err) {
-        return { success: false, error: err, data: null };
-    }
-    return { success: true, data: result };
-
+async function getSaloon(loc) {
+    console.log(loc.latitude,loc.longitude)
+    const saloon = await companyData.find()
+    let nearBy = [];
+    saloon.map((data,index)=>{
+     const dis =  distance(loc.latitude,loc.longitude,data.latitude,data.longitude)
+     console.log(dis,loc.radius)
+        if(dis  <= loc.radius){
+        nearBy.push(data)
+        }
+    })
+    return nearBy
 }
 
 

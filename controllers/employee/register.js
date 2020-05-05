@@ -119,7 +119,7 @@ async function createUser(userData) {
   const salt = await bcrypt.genSalt(10);
   const hashed = await bcrypt.hash(user.password, salt);
   user.password = hashed;
-  user.access_token = generateAuthToken;
+  user.access_token = generateAuthToken(user._id);
   var resResult;
   try {
     resResult = await user.save();

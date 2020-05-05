@@ -13,7 +13,7 @@ const app = express();
 //***** ///// *****//
 
 //***** Post Request for Login *****//
-app.get('/', async(req, res)=> {
+app.get('/',auth, async(req, res)=> {
 
   try{
     const service = await serviceData.find();
