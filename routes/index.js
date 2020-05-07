@@ -7,6 +7,7 @@ const paymentRouter = require('./payment');
 const employeeRouter = require('./employee');
 const serviceRouter = require('./service');
 const saloonRouter = require('./saloon');
+const postRouter = require('./plan');
 var app = express();
 /* GET home page. */
 
@@ -18,4 +19,5 @@ app.use('/payment',paymentRouter);
 app.use('/employee', employeeRouter );
 app.use('/service', serviceRouter );
 app.use('/saloon',saloonRouter);
+app.use('/post',postRouter);
 module.exports = app;

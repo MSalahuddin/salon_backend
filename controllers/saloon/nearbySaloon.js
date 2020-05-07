@@ -12,7 +12,6 @@ const auth = require('../../middleware/auth');
 const app = express();
 //***** ///// *****//
 const distance = (lat1, lon1, lat2, lon2) => {
-    console.log(lat1,lon1)
     var R = 6371; // km (change this constant to get miles)
     var dLat = (lat2 - lat1) * Math.PI / 180;
     var dLon = (lon2 - lon1) * Math.PI / 180;
@@ -72,8 +71,7 @@ async function getRole(data) {
 
 //***** Initialing and saving data *****//
 async function getSaloon(loc) {
-    console.log(loc.latitude,loc.longitude)
-    const saloon = await companyData.find()
+    const saloon = await companyData.find();
     let nearBy = [];
     saloon.map((data,index)=>{
      const dis =  distance(loc.latitude,loc.longitude,data.latitude,data.longitude)
@@ -82,7 +80,7 @@ async function getSaloon(loc) {
         nearBy.push(data)
         }
     })
-    return nearBy
+    return {success:true,msg:"data found",data:nearBy}
 }
 
 
