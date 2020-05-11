@@ -7,7 +7,7 @@ const paymentRouter = require('./payment');
 const employeeRouter = require('./employee');
 const serviceRouter = require('./service');
 const saloonRouter = require('./saloon');
-const postRouter = require('./plan');
+const postRouter = require('./posts');
 var app = express();
 /* GET home page. */
 

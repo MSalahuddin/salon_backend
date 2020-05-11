@@ -9,8 +9,8 @@ const app = express.Router();
 //***** Distributing requests *****//
 
 //~~ get plans ~~//
-const getPost = require('../controllers/posting/getPost');
-app.use('/getpost', getPost);
+// const getPost = require('../controllers/posting/getPost');
+// app.use('/getpost', getPost);
 
 const uploadPost = require('../controllers/posting/uploadPost');
 app.use('/upload', uploadPost);

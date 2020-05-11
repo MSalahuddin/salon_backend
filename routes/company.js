@@ -21,7 +21,8 @@ app.use('/login', loginModule);
 const  createCompany= require('../controllers/company/createCompany');
 app.use('/createCompany', createCompany);
 //***** ///// *****//
-
+const getCompany = require('../controllers/company/getCompany');
+app.use('/getCompany:id', getCompany);
 //~~ create plans ~~//
 const createPlans = require('../controllers/company/createPlan');
 app.use('/plan', createPlans);
