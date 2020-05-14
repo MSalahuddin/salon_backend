@@ -14,7 +14,6 @@ const app = express();
 
 //***** Post Request for Signup *****//
 app.post("/", auth, async (req, res) => {
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     const { error } = validatePaymentData(req.body);
     console.log(error);
     if (error) {
@@ -38,11 +37,10 @@ app.post("/", auth, async (req, res) => {
     var paymentData = { ...req.body, ...{ userId: req.user._id } }
     const paymentMethod = await createUserPayment(paymentData)
     if (paymentMethod.success == false) {
-      console.log(paymentMethod)
       res.send(paymentMethod)
       return
     }
-    res.send(paymentMethod);
+    res.send(paymentData);
 });
 //***** ///// *****//
 

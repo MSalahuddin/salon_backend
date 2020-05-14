@@ -28,6 +28,7 @@ app.post("/", async (req, res) => {
     return;
   }
   const user = await checkUser(req.body);
+
   if (user == null) {
     var errors = {
       success: false,
@@ -36,7 +37,9 @@ app.post("/", async (req, res) => {
     };
     res.send(errors);
   }
+
   const role = await getUserRole(user._id);
+
   var data = _.pick(user, [
     "_id",
     "firstName",
@@ -47,14 +50,16 @@ app.post("/", async (req, res) => {
     "createdDate",
     "access_token",
   ]);
+
   data = { ...data, ...{ role: role.role[0] } };
-  console.log(data);
+
   data.profile_img = `${url}${data.profile_img}`;
   var success = {
     success: true,
     msg: "User Found",
     data: data,
   };
+
   res.send(success);
 });
 //***** ///// *****//
