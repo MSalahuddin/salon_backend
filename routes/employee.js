@@ -19,4 +19,16 @@ app.use('/login', loginModule);
 const createProfile = require('../controllers/employee/createProfile');
 app.use('/createProfile', createProfile);
 //***** ///// *****//
+
+const getEmployee = require('../controllers/employee/getEmployee');
+app.use('/getEmployee', getEmployee);
+
+const getMultipleEmployee = require('../controllers/employee/getMultipleEmployee');
+app.use('/getMultipleEmployee', getMultipleEmployee);
+
+const editEmployee = require('../controllers/employee/editEmployee');
+app.use('/editEmployee', editEmployee);
+
+const deleteEmployee = require('../controllers/employee/deleteEmployee');
+app.use('/deleteEmployee', deleteEmployee);
 module.exports = app;
