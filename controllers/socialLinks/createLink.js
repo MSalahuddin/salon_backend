@@ -20,7 +20,7 @@ app.post("/", auth, async (req, res) => {
     return;
   }
 
-  req.body.companyId = req.user._id;
+  // req.body.companyId = req.user._id;
   const role = await getRole(req.user._id);
 
   if (role.role[0] !== "3") {
@@ -41,6 +41,7 @@ app.post("/", auth, async (req, res) => {
 
 function validateSocialLinkData(linkData) {
   const schema = Joi.object().keys({
+    companyId:Joi.string().required(),
     socialURL: Joi.array()
       .items(
         Joi.object({
