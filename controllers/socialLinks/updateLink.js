@@ -6,7 +6,7 @@ const auth = require("../../middleware/auth");
 
 const app = express();
 
-app.patch("/", auth, async (req, res) => {
+app.put("/", auth, async (req, res) => {
   //auth,
   const { error } = validateSocialLinkData(req.body);
   console.log(error);
@@ -19,11 +19,11 @@ app.patch("/", auth, async (req, res) => {
     res.send(errors);
     return;
   }
-  req.body.companyId = req.user._id;
+
   const role = await getRole(req.user._id);
 
   if (role.role[0] !== "3") {
-    var err = {
+    let err = {
       success: false,
       msg: "access denied",
     };
@@ -32,12 +32,21 @@ app.patch("/", auth, async (req, res) => {
 
   try {
     const updateKeys = Object.keys(req.body)
-    const link = await socialLink.findOne({companyId: req.query.id})
+    const link = await socialLink.findOne({companyId: req.query.companyId})
     updateKeys.forEach(update => link[update] = req.body[update])
     await link.save()
-    res.send(link)
+    var data ={
+      success:true,
+      msg:"updated",
+      data:link
+    }
+    res.send(data)
   } catch (error) {
-    res.status(400).send()
+    let err = {
+      success:false,
+      msg:error
+    }
+    res.status(400).send(err)
   }
 });
 

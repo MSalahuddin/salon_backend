@@ -67,7 +67,7 @@ async function createLink(data) {
   } catch (err) {
     return { success: false, error: err, data: null };
   }
-  return { success: true, data: result };
+  return { success: true,msg:"found", data: result };
 }
 
 module.exports = app;
